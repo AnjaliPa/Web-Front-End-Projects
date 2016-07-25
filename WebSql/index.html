@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+
+
+<script type="text/javascript">
+ 
+    function validation()
+    {
+        
+ //var numberval = document.getElementsByName("quantity").length; 
+  var numberval =   document.forms["myForm"]["quantity"].value;
+       
+        if(numberval=="")
+            {
+                alert("pleaes fill Number");
+                
+            }
+        else if(numberval<0 || numberval>130 )
+            {
+                alert("Number should be 0 to 130!")
+            }
+        else{
+            dbGo();
+        }
+        
+    }
+     var db = prepareDatabase();
+        var createSQL = 'CREATE TABLE IF NOT EXISTS DataEntry (' +
+        'id INTEGER PRIMARY KEY,' +
+        'color TEXT,' +
+        'number TEXT' +
+        ')';
+   
+         // Check if this browser supports Web SQL
+    function getOpenDatabase() {
+        try {
+            if( !! window.openDatabase )
+                return window.openDatabase;
+            else return undefined;
+        } catch(e) {
+            return undefined;
+        }
+    }
+        
+        // Open the Web SQL database
+    function prepareDatabase() {
+        var odb = getOpenDatabase();
+        // alert("hi")
+        if(!odb) {
+            dispError('Web SQL Not Supported');
+            return undefined;
+        } else {
+            var db = odb( 'testDatabase', '1.0', 'A Test Database', 10 * 1024 * 1024 );
+            db.transaction(function (t) {
+                t.executeSql( createSQL, [], function(t, r) 
+                {
+                    //alert("create table"+r.rowsAffected)
+                    //return false;
+                }, function(t, e) {
+                    alert('create table: ' + e.message);
+                });
+            });
+            return db;
+        }
+    }
+    
+     // add or update rows in the table
+        function dbGo() {
+            var color = document.getElementById('color').value;
+            var number = document.getElementById('quantity').value;
+           
+            if(color || number) {
+                db.transaction( function(t) {
+                    t.executeSql(' INSERT INTO DataEntry (color,number) VALUES ( ?, ? ) ',[ color, number]);
+                }, function(t, e){ alert('Insert row: ' + e.message); }, function() {
+                 
+                });
+            }
+         dispResults();
+        }
+    
+      // Main display function
+        function dispResults() {
+             if(db) {
+                db.readTransaction(function(t) {    // readTransaction sets the database to read-only
+                    t.executeSql('SELECT * FROM DataEntry', [], function(t, r) {
+                        for( var i = 0; i < r.rows.length; i++ ) {
+                            var row = r.rows.item(i);
+                            alert("color : " +row.color+"  Number : " +row.number)
+                         }
+                    });
+                });
+            }
+        }
+    </script>
+</head>
+
+<body>
+  <form name="myForm" >
+    <h1>WebSql Example</h1>
+    
+    <div style="width:180px;height:140px;border: 1px groove;border-radius:5px;padding:10px;">
+         <table class="form" >
+                <tr><td class="label">Color </td><td> <input type="color" name="color" id="color" value="#ff0000"/></td></tr>
+             <tr><td colspan="2" style="height:20px"></td></tr>
+              
+                <tr><td class="label">Number </td><td> <input type="number" name="quantity" id="quantity" min="0" max="130" /> </td></tr>
+              <tr><td colspan="2" style="height:20px"></td></tr>
+                <tr><td colspan="2" class="button" align="center">
+                    <input  type="button" name="goButton" value="Save" onClick="javascript:validation();" />
+                    </td>
+                </tr>
+            </table>
+       
+  
+    </div>
+    </form>
+
+</body>
+</html>
