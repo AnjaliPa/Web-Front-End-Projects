@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Untitled Document</title>
+
+</head>
+<style>
+body {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Comic Sans MS', Helvetica, sans-serif;
+}
+table {
+  margin-left:auto; 
+  margin-right:auto; 
+  width: 551px; 
+  
+}
+#div1{
+  height: 175px;
+  width: 175px;
+  text-align: center;
+  font-size: 120px;
+  border: 2px solid #cccccc;
+  border-radius: 10px;
+  margin-left:auto; 
+  margin-right:auto; 
+  margin-bottom:1px
+}
+
+</style>
+
+
+<body>
+
+<table>
+  <tr>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+  </tr>
+  <tr>
+    <td ><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+  </tr>
+  <tr>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+    <td><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+  </tr>
+</table>
+ 
+<img id="drag1" src="img/x.png" draggable="true"  ondragstart="drag(event)" width="150px" height="150px">
+<img id="drag2" src="img/x.png" draggable="true"  ondragstart="drag(event)" width="150px" height="150px">
+<img id="drag3" src="img/x.png" draggable="true"  ondragstart="drag(event)" width="150px" height="150px">
+<img id="drag4" src="img/x.png" draggable="true"  ondragstart="drag(event)" width="150px" height="150px">
+<img id="drag5" src="img/x.png" draggable="true"  ondragstart="drag(event)" width="150px" height="150px">
+<br />
+<img id="drag6" src="img/o.png" draggable="true"  ondragstart="drag(event)" width="140px" height="140px">
+<img id="drag7" src="img/o.png" draggable="true"  ondragstart="drag(event)" width="140px" height="140px">
+<img id="drag8" src="img/o.png" draggable="true"  ondragstart="drag(event)" width="140px" height="140px">
+<img id="drag9" src="img/o.png" draggable="true"  ondragstart="drag(event)" width="140px" height="140px">
+<img id="drag10" src="img/o.png" draggable="true"  ondragstart="drag(event)" width="140px" height="140px">
+    
+
+</body>
+  <script>
+function allowDrop(ev) {
+    ev.preventDefault();
+     
+}
+
+function drag(ev) {
+
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+   
+    ev.preventDefault();
+    
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+</script>  
+</html>
