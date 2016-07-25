@@ -1,0 +1,147 @@
+<!DOCTYPE html5>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+
+<!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>-->
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyKU4NC6S2HpihpbwwGwwdCJPn7ZfY58o"
+  type="text/javascript"></script>
+<script type="text/javascript"> </script>
+<script>
+
+    // check for Geolocation support
+if (navigator.geolocation) {
+  console.log('Geolocation is supported!');
+  
+}
+else {
+  console.log('Geolocation is not supported for this Browser/OS version yet.');
+}
+
+var lat;    
+var lon;
+var location1;
+var getLocation =  function(address)
+{
+  var latitude;    
+  var longitude;
+  var geocoder = new google.maps.Geocoder();
+  geocoder.geocode( { 'address': address}, function(results, status) {
+
+  if (status == google.maps.GeocoderStatus.OK) {
+       latitude = results[0].geometry.location.lat();
+       longitude = results[0].geometry.location.lng();
+       location1 = [latitude,longitude];
+        getlatlog(location1)
+      console.log(latitude, longitude);
+     // return [latitude, longitude];
+      } 
+  }); 
+      
+}
+
+var getLocation1 =  function(address)
+{
+  var latitude;    
+  var longitude;
+  var geocoder = new google.maps.Geocoder();
+  geocoder.geocode( { 'address': address}, function(results, status) {
+
+  if (status == google.maps.GeocoderStatus.OK) {
+       latitude = results[0].geometry.location.lat();
+       longitude = results[0].geometry.location.lng();
+       location1 = [latitude,longitude];
+        getdeslatlog(location1)
+      console.log(latitude, longitude);
+     // return [latitude, longitude];
+      } 
+  }); 
+      
+}
+var lat1;
+ var lon1;
+function getlatlog(location1)
+    {
+  lat1 = location1[0]
+  lon1 = location1[1]
+
+// Distance(location1[0],location1[1]);
+    }
+    
+ var dlat1
+ var dlon1
+function getdeslatlog(location1)
+    {
+     dlat1 = location1[0]
+     dlon1 = location1[1]
+
+ Distance(lat1,lon1,dlat1,dlon1)
+    }
+
+    
+    
+function showDistance()
+{
+ var source =   document.forms["myForm"]["address1"].value;
+    if(source=="")
+        {
+            alert("Please enter address1!")
+            return false;
+        }
+ getLocation(source);
+ var destination =   document.forms["myForm"]["address2"].value;
+     if(destination=="")
+        {
+           alert("Please enter address2!")
+           return false;
+        }
+ getLocation1(destination);
+}
+    
+function Distance(lat1,lon1,dlat1,dlon1)
+    {
+     var lat1 = lat1
+     var lon1 = lon1
+     var lat2 = dlat1
+     var lon2 = dlon1
+     var R = 6371; // km
+     var dLat = (lat2 - lat1)* Math.PI / 180;
+     var dLon = (lon2 - lon1)* Math.PI / 180; 
+     var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+              Math.sin(dLon / 2) * Math.sin(dLon / 2); 
+     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+     var d = R * c
+    document.getElementById('distance').innerHTML = d.toFixed(3);
+        
+    return d;
+        
+    }
+ </script>
+</head>
+<body>
+<form name="myForm" >
+    <h1>Calculate Distance</h1>
+    
+    <div style="width:320px;height:160px;border: 1px groove;border-radius:5px;padding:10px;">
+         <table class="form" >
+                <tr><td class="label" >Address1 : </td><td> <input type="text" name="address1" id="address1" /></td></tr>
+             <tr><td colspan="2" style="height:20px"></td></tr>
+              
+                <tr><td class="label">Address2 : </td><td> <input type="text" name="address2" id="address2" /> </td></tr>
+              <tr><td colspan="2" style="height:20px"></td></tr>
+             <tr><td class="label">Distance : </td><td><span id="distance"></span> </td></tr>
+              <tr><td colspan="2" style="height:15px"></td></tr>
+                <tr><td colspan="2" class="button" align="center">
+                    <input  type="button" name="goButton" value="Calculate"  onClick="javascript:showDistance()"/>
+                    </td>
+                </tr>
+            </table>
+       <div id="mapholder"></div>
+  
+    </div>
+    </form>
+</body>
+   
+</html>
