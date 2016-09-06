@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<style>
+.websocket {
+   float: center;
+   margin: 10px;
+   padding: 10px;
+   max-width: 600px;
+   height: 800px;
+  
+}
+ .centered-table {
+   margin-left: auto;
+   margin-right: auto;
+}
+    .centered { text-align: center; 
+        background-color: burlywood;
+    }
+    .header1
+    {
+        font-family: cursive;
+        color: white;
+    
+    }
+</style>
+
+</head>
+<body>
+	
+    
+   <div class="centered">
+    <div class="websocket centered-table">
+        <h1 class="header1">User will click the button then Server will give the response back using Node.js</h1>
+        <br>
+        <br>
+        <div>Client Message: <input class="input_field"  id="client_msg" type="text" value="Hi How are you?" readonly/></div>
+        <br>
+        <div>Server Message: <input class="input_field" id="server_msg" type="text" readonly /></div>
+        <br>
+        <div><input class="button"  type="button"  onclick="javascript:WebSocketTest()" value="Connect & Send" /></div>
+        <span id="result"> </span>
+</div></div>
+        
+</body>
+    <script type="text/javascript">
+	function WebSocketTest(){ 
+		if (window.WebSocket){
+			 var content = "WebSocket is supported by your Browser!"
+            $("#result").text(content);
+            //var ws = new WebSocket("wss://young-fjord-68103.herokuapp.com/", 'echo-protocol');
+			var host = location.origin.replace(/^http/, 'ws');
+			var ws = new WebSocket(host);
+			ws.onopen = function(){
+                content ="<br><br>Connected to server..";
+                 $("#result").append(content);
+                //alert("Connected to server..");
+				 var clientmsg =  document.getElementById("client_msg").value
+                 ws.send(clientmsg);
+				content ="<br><br>Message is sent to server:"+clientmsg;
+                 $("#result").append(content);
+                //alert("Message is sent : " + clientmsg);
+			};
+			ws.onmessage = function (evt){
+				var received_msg = evt.data;
+                content ="<br><br>Message is received from server:"+received_msg;
+                $("#result").append(content);
+				//alert("Message is received : " + evt.data);
+                 document.getElementById("server_msg").value=received_msg;
+			};
+			ws.onclose = function(){
+                content="<br><br>Connection is closed..."
+				 $("#result").append(content);
+                //alert("Connection is closed...");
+			};
+			ws.onerror = function(){
+                content="<br><br>WebSocket error..."
+				 $("#result").append(content);
+				//alert("WebSocket error...");
+			};
+		} else{
+			alert("WebSocket NOT supported by your Browser!");
+		}
+	}
+        
+</script>
+    
+   <script type = "text/javascript" 
+         src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		
+</html>
+
